@@ -1,0 +1,9 @@
+apis/DefaultApi.ts
+apis/index.ts
+index.ts
+models/Currency.ts
+models/DailyCurrencyRates.ts
+models/RangeCurrencyRateStats.ts
+models/RateStats.ts
+models/index.ts
+runtime.ts

@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "html.completion.attributeDefaultValue": "singlequotes",
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+}

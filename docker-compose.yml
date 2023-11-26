@@ -1,0 +1,67 @@
+version: '3'
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    environment:
+      - VIRTUAL_HOST=localhost
+    volumes:
+      - app_data:/usr/share/nginx/html
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  api:
+    build:
+      dockerfile: ./backend/Dockerfile
+      context: .
+    depends_on:
+      - db
+      - keydb
+    ports:
+      - 3000:3000
+    networks:
+      - app-network
+      - api
+
+  db:
+    image: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - api
+
+  keydb:
+    image: eqalpha/keydb
+    volumes:
+      - keydb_data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - api
+
+volumes:
+  db_data:
+  keydb_data:
+  app_data:
+
+networks:
+  app-network:
+  api:
+

@@ -1,0 +1,50 @@
+version: '3'
+services:
+  api:
+    build:
+      dockerfile: ./backend/Dockerfile.dev
+      context: .
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev
+    depends_on:
+      - db
+      - keydb
+    ports:
+      - 3000:3000
+
+  db:
+    image: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${DATABASE_USER}
+      PMA_PASSWORD: ${DATABASE_PASSWORD}
+      PMA_ARBITRARY: 1
+    ports:
+      - 8081:80
+
+  keydb:
+    image: eqalpha/keydb
+    ports:
+      - 6379:6379
+    volumes:
+      - keydb_data:/data
+
+
+volumes:
+  db_data:
+  keydb_data:
