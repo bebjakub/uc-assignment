@@ -6,10 +6,12 @@ FROM node:18-alpine As development
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY ./backend/package*.json ./
 
 RUN npm i
 
-COPY . .
+COPY ./backend .
+
+COPY .env .
 
 RUN npm run build

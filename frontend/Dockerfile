@@ -1,18 +1,17 @@
 FROM node:18-alpine as build
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
 WORKDIR /usr/src/app
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json .
 
-RUN npm ci --omit=dev
+RUN npm ci
 
 COPY . .
 
+ENV NODE_ENV=production
+
 RUN npm run build
+
 
 
 FROM nginx:1.24.0-alpine

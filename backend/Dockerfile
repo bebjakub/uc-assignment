@@ -8,9 +8,9 @@ FROM node:18-alpine AS install-dependencies
 
 WORKDIR /usr/src/app
 
-COPY ./backend/package.json ./backend/package-lock.json ./
+COPY ./backend/package*.json ./
 
-RUN npm ci --omit=dev
+RUN npm ci
 
 COPY .env .
 
